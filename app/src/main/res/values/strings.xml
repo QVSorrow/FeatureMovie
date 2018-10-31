@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FeatureMovie</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="img_url">https://image.tmdb.org/t/p/w300_and_h450_bestv2</string>
 </resources>
