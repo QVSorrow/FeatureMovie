@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.featmov.serles.featuremovie.R
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
+private const val MOVIE_IMG_URL = "MOVIE_IMG_URL"
 private const val ARG_PARAM2 = "param2"
 
 /**
@@ -52,7 +53,7 @@ class FragmentMain : Fragment() {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            param1 = it.getString(MOVIE_IMG_URL)
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -87,7 +88,6 @@ class FragmentMain : Fragment() {
             viewModel = ViewModelProviders.of(activity, viewModelFactory)
                     .get(MovieViewModel::class.java)
             viewModel.movieLiveData.observe(this, Observer {
-                Log.w("dwadwa", "dadwad")
                 movie_name.text = it?.title
                 movie_genres.text = it?.genres?.get(0)?.name ?: ""
                 movie_overview.text = it?.overview
@@ -97,6 +97,10 @@ class FragmentMain : Fragment() {
                                 .placeholder(R.drawable.ic_launcher_background)
                                 .fitCenter())
                         .into(movie_img)
+
+                val bundle = Bundle()
+                bundle.putString(MOVIE_IMG_URL, resources.getString(R.string.img_url) + it?.backdrop_path)
+                movie_img.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_fragmentMain_to_fragmentSecond, bundle))
             })
             viewModel.getMovie()
         }
@@ -137,7 +141,7 @@ class FragmentMain : Fragment() {
         fun newInstance(param1 : String, param2 : String) =
                 FragmentMain().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
+                        putString(MOVIE_IMG_URL, param1)
                         putString(ARG_PARAM2, param2)
                     }
                 }

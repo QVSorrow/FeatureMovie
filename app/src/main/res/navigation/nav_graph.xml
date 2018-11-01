@@ -13,10 +13,13 @@
         <action
                 android:id="@+id/action_fragmentMain_to_fragmentSecond"
                 app:destination="@id/fragmentSecond"/>
+
     </fragment>
     <fragment
             android:id="@+id/fragmentSecond"
             android:name="com.featmov.serles.featuremovie.presentation.FragmentSecond"
             android:label="fragment_second"
-            tools:layout="@layout/fragment_second"/>
+            tools:layout="@layout/fragment_second">
+
+    </fragment>
 </navigation>

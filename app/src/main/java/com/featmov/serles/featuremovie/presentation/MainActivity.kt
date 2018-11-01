@@ -11,7 +11,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), FragmentMain.OnFragmentInteractionListener, HasSupportFragmentInjector {
+class MainActivity : AppCompatActivity(), FragmentMain.OnFragmentInteractionListener, HasSupportFragmentInjector, FragmentSecond.OnFragmentInteractionListener {
 
     @Inject
     lateinit var fragmentInjector : DispatchingAndroidInjector<Fragment>
