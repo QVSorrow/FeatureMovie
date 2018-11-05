@@ -1,11 +1,10 @@
-package com.featmov.serles.featuremovie.data
+package com.featmov.serles.featuremovie.data.remote.responce
 
-import java.math.BigInteger
 
 data class Movie (
         val adult: Boolean,
         val backdrop_path: String,
-        val budget: BigInteger,
+        val budget: Long,
         val genres: List<Genres>,
         val homepage: String,
         val id: Int,
@@ -18,7 +17,7 @@ data class Movie (
         val production_companies: List<ProductionCompanies>,
         val production_countries: List<ProductionCountries>,
         val release_date: String,
-        val revenue: BigInteger,
+        val revenue: Long,
         val runtime: Int,
         val spoken_languages: List<SpokenLanguages>,
         val status: String,
@@ -31,22 +30,22 @@ data class Movie (
 
 data class Genres (
         val id: Int,
-        val name: String
+        val name: String = ""
 )
 
 data class ProductionCompanies (
         val id: Int,
-        val logo_path: String,
-        val name: String,
-        val origin_country: String
+        val logo_path: String? = "",
+        val name: String = "",
+        val origin_country: String = ""
 )
 
 data class ProductionCountries (
-        val iso_3166_1: String,
-        val name: String
+        val iso_3166_1: String = "",
+        val name: String = ""
 )
 
 data class SpokenLanguages (
-        val iso_639_1: String,
-        val name: String
+        val iso_639_1: String = "",
+        val name: String = ""
 )

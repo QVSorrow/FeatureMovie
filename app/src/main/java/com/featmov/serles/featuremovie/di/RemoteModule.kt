@@ -1,9 +1,10 @@
 package com.featmov.serles.featuremovie.di
 
-import com.featmov.serles.featuremovie.data.RemoteDataSource
+import com.featmov.serles.featuremovie.data.remote.RemoteDataSource
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -11,7 +12,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -34,7 +34,7 @@ class RemoteModule {
     fun provideConverterFactory(gson : Gson) : Converter.Factory = GsonConverterFactory.create(gson)
 
     @Provides
-    fun provideCallFactory() : CallAdapter.Factory = RxJava2CallAdapterFactory.create()
+    fun provideCallFactory() : CallAdapter.Factory = CoroutineCallAdapterFactory()
 
     @Provides
     fun provideRetrofit(
@@ -51,6 +51,6 @@ class RemoteModule {
     }
 
     @Provides
-    fun provideRemoteDataSource(retrofit : Retrofit/*, okHttpClient : OkHttpClient*/) : RemoteDataSource =
-            RemoteDataSource(retrofit/*, okHttpClient*/)
+    fun provideRemoteDataSource(retrofit : Retrofit) : RemoteDataSource =
+            RemoteDataSource(retrofit)
 }

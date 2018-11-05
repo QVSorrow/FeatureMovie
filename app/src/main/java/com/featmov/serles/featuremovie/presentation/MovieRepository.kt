@@ -1,9 +1,11 @@
 package com.featmov.serles.featuremovie.presentation
 
-import com.featmov.serles.featuremovie.data.Movie
-import io.reactivex.Single
+import com.featmov.serles.featuremovie.data.remote.responce.Movie
+import kotlinx.coroutines.Deferred
 
 interface MovieRepository {
 
-    fun getMovie(api_key : String): Single<Movie>
+    suspend fun getMovie(api_key : String)
+
+    suspend fun getMovieFromDB(id: Int): Movie
 }

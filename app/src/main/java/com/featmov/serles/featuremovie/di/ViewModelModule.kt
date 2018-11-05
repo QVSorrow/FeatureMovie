@@ -2,6 +2,7 @@ package com.featmov.serles.featuremovie.di
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.featmov.serles.featuremovie.data.database.FeatureMovieDataBase
 import com.featmov.serles.featuremovie.presentation.MovieViewModel
 import dagger.Binds
 import dagger.MapKey

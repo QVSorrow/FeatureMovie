@@ -1,4 +1,4 @@
-package com.featmov.serles.featuremovie.data
+package com.featmov.serles.featuremovie.data.remote
 
 
 import retrofit2.Retrofit
