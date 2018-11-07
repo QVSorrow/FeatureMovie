@@ -1,7 +1,7 @@
 package com.featmov.serles.featuremovie.di.activity
 
-import com.featmov.serles.featuremovie.presentation.FragmentMain
-import com.featmov.serles.featuremovie.presentation.FragmentSecond
+import com.featmov.serles.featuremovie.presentation.main.fragment.FragmentMain
+import com.featmov.serles.featuremovie.presentation.second.fragment.FragmentSecond
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

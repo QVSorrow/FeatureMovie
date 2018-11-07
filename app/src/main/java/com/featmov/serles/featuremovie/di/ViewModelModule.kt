@@ -2,8 +2,8 @@ package com.featmov.serles.featuremovie.di
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.featmov.serles.featuremovie.data.database.FeatureMovieDataBase
-import com.featmov.serles.featuremovie.presentation.MovieViewModel
+import com.featmov.serles.featuremovie.presentation.main.viewmodel.MovieViewModel
+import com.featmov.serles.featuremovie.presentation.second.viewmodel.MovieDetailViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -22,6 +22,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MovieViewModel::class)
     internal abstract fun bindMovieFragmentViewModel(viewModel : MovieViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailViewModel::class)
+    internal abstract fun bindMovieDetailFragmentViewModel(viewModel : MovieDetailViewModel) : ViewModel
 }
 
 @MustBeDocumented

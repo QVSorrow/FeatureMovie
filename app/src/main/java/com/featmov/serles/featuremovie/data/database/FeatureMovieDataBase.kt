@@ -2,12 +2,15 @@ package com.featmov.serles.featuremovie.data.database
 
 import android.arch.persistence.room.*
 import android.content.Context
+import com.featmov.serles.featuremovie.data.database.dao.MovieDataDao
+import com.featmov.serles.featuremovie.data.database.dao.MovieDetailsDataDao
 import com.featmov.serles.featuremovie.data.database.entitis.*
 
-@Database(entities = arrayOf(MovieEntity::class, GenresEntity::class,
-        ProductionCompaniesEntity::class, ProductionCountriesEntity::class, SpokenLanguagesEntity::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(MovieDetailsEntity::class, GenresEntity::class,
+        ProductionCompaniesEntity::class, ProductionCountriesEntity::class, SpokenLanguagesEntity::class, MovieEntity::class), version = 1, exportSchema = false)
 abstract class FeatureMovieDataBase : RoomDatabase(){
-    abstract fun movieDataDao(): MovieDataDao
+    abstract fun movieDetailsDataDao(): MovieDetailsDataDao
+    abstract fun movieListDataDao(): MovieDataDao
 
     companion object {
         var INSTANCE : FeatureMovieDataBase? = null

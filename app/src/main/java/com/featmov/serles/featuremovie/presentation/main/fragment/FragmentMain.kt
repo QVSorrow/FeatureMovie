@@ -1,4 +1,4 @@
-package com.featmov.serles.featuremovie.presentation
+package com.featmov.serles.featuremovie.presentation.main.fragment
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
@@ -7,23 +7,23 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.navigation.fragment.findNavController
 import com.featmov.serles.featuremovie.R
+import com.featmov.serles.featuremovie.presentation.main.adapter.MainAdapter
+import com.featmov.serles.featuremovie.presentation.main.MovieClick
+import com.featmov.serles.featuremovie.presentation.main.viewmodel.MovieViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val MOVIE_IMG_URL = "MOVIE_IMG_URL"
+private const val MOVIE_ID = "MOVIE_ID"
 private const val ARG_PARAM2 = "param2"
 
 /**
@@ -35,25 +35,23 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class FragmentMain : Fragment() {
+class FragmentMain : Fragment(), MovieClick {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: MovieViewModel
-    lateinit var movie_img: ImageView
-    lateinit var movie_name: TextView
-    lateinit var movie_genres: TextView
-    lateinit var movie_overview: TextView
     // TODO: Rename and change types of parameters
     private var param1 : String? = null
     private var param2 : String? = null
     private var listener : OnFragmentInteractionListener? = null
+    lateinit var adapter : MainAdapter
+    lateinit var list : RecyclerView
 
     override fun onCreate(savedInstanceState : Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(MOVIE_IMG_URL)
+            param1 = it.getString(MOVIE_ID)
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -61,10 +59,11 @@ class FragmentMain : Fragment() {
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?,
                               savedInstanceState : Bundle?) : View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
-        movie_img = view.findViewById(R.id.movie_img)
-        movie_name = view.findViewById(R.id.movie_name)
-        movie_genres = view.findViewById(R.id.movie_genres)
-        movie_overview = view.findViewById(R.id.movie_overview)
+        list = view.findViewById(R.id.list)
+        adapter = MainAdapter(arrayListOf())
+        adapter.movieClick = this
+        list.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        list.adapter = adapter
         return view
     }
 
@@ -88,19 +87,7 @@ class FragmentMain : Fragment() {
             viewModel = ViewModelProviders.of(activity, viewModelFactory)
                     .get(MovieViewModel::class.java)
             viewModel.movieLiveData.observe(this, Observer {
-                movie_name.text = it?.title
-                movie_genres.text = it?.genres?.get(0)?.name ?: ""
-                movie_overview.text = it?.overview
-                Glide.with(activity)
-                        .load(resources.getString(R.string.img_url) + it?.backdrop_path)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.ic_launcher_background)
-                                .fitCenter())
-                        .into(movie_img)
-
-                val bundle = Bundle()
-                bundle.putString(MOVIE_IMG_URL, resources.getString(R.string.img_url) + it?.backdrop_path)
-                movie_img.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_fragmentMain_to_fragmentSecond, bundle))
+                it?.let { it1 -> adapter.addItems(it1) }
             })
             viewModel.getMovie()
         }
@@ -109,6 +96,12 @@ class FragmentMain : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun onClick(movieId : Int) {
+        findNavController().navigate(
+                FragmentMainDirections.actionFragmentMainToFragmentSecond(movieId)
+        )
     }
 
     /**
@@ -141,7 +134,7 @@ class FragmentMain : Fragment() {
         fun newInstance(param1 : String, param2 : String) =
                 FragmentMain().apply {
                     arguments = Bundle().apply {
-                        putString(MOVIE_IMG_URL, param1)
+                        putString(MOVIE_ID, param1)
                         putString(ARG_PARAM2, param2)
                     }
                 }

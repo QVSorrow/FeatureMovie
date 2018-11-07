@@ -1,5 +1,8 @@
-package com.featmov.serles.featuremovie.presentation
+package com.featmov.serles.featuremovie.presentation.second.fragment
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -8,15 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.featmov.serles.featuremovie.R
+import com.featmov.serles.featuremovie.presentation.second.fragment.FragmentSecondArgs.fromBundle
+import com.featmov.serles.featuremovie.presentation.second.viewmodel.MovieDetailViewModel
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val MOVIE_IMG_URL = "MOVIE_IMG_URL"
+private const val MOVIE_ID = "MOVIE_ID"
 private const val ARG_PARAM2 = "param2"
 
 /**
@@ -29,17 +36,26 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class FragmentSecond : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModel: MovieDetailViewModel
     // TODO: Rename and change types of parameters
-    private var param1 : String? = null
+    private var param1 : Int? = null
     private var param2 : String? = null
     private var listener : OnFragmentInteractionListener? = null
-    lateinit var big_img: ImageView
+    lateinit var movie_img: ImageView
+    lateinit var movie_name: TextView
+    lateinit var movie_genres: TextView
+    lateinit var movie_overview: TextView
+    var mobieId = 0
 
     override fun onCreate(savedInstanceState : Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(MOVIE_IMG_URL)
+            mobieId = fromBundle(it).movieId
+            param1 = it.getInt(MOVIE_ID)
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -47,7 +63,10 @@ class FragmentSecond : Fragment() {
     override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?,
                               savedInstanceState : Bundle?) : View? {
         var view = inflater.inflate(R.layout.fragment_second, container, false)
-        big_img = view.findViewById(R.id.big_img)
+        movie_img = view.findViewById(R.id.movie_img)
+        movie_name = view.findViewById(R.id.movie_name)
+        movie_genres = view.findViewById(R.id.movie_genres)
+        movie_overview = view.findViewById(R.id.movie_overview)
         return view
     }
 
@@ -68,12 +87,20 @@ class FragmentSecond : Fragment() {
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { activity ->
-            Glide.with(activity)
-                    .load(param1)
-                    .apply(RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .fitCenter())
-                    .into(big_img)
+            viewModel = ViewModelProviders.of(activity, viewModelFactory)
+                    .get(MovieDetailViewModel::class.java)
+            viewModel.movieLiveData.observe(this, Observer {
+                movie_name.text = it?.title
+                movie_genres.text = it?.genres?.get(0)?.name
+                movie_overview.text = it?.overview
+                Glide.with(activity)
+                        .load(resources.getString(R.string.img_url) + it?.backdrop_path)
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.ic_launcher_background)
+                                .fitCenter())
+                        .into(movie_img)
+            })
+            viewModel.getMovie(mobieId)
         }
     }
 
@@ -112,7 +139,7 @@ class FragmentSecond : Fragment() {
         fun newInstance(param1 : String, param2 : String) =
                 FragmentSecond().apply {
                     arguments = Bundle().apply {
-                        putString(MOVIE_IMG_URL, param1)
+                        putString(MOVIE_ID, param1)
                         putString(ARG_PARAM2, param2)
                     }
                 }

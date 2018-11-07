@@ -3,34 +3,38 @@ package com.featmov.serles.featuremovie
 import com.featmov.serles.featuremovie.data.database.entitis.*
 import com.featmov.serles.featuremovie.data.remote.responce.*
 
-fun mapMovieToDB(movie: Movie) : MovieEntity{
-    return MovieEntity(movie.id, movie.adult, movie.backdrop_path, movie.budget, /*movie.genres.map { GenresEntity(it.id, it.name, movie.id) },*/ movie.homepage,
+fun mapMovieToDB(movie: MovieDetails) : MovieDetailsEntity{
+    return MovieDetailsEntity(movie.id, movie.adult, movie.backdrop_path, movie.budget, movie.homepage,
             movie.imdb_id, movie.original_language, movie.original_title, movie.overview, movie.popularity,
-            movie.poster_path, /*movie.production_companies.map { ProductionCompaniesEntity(it.id, it.logo_path, it.name, it.origin_country, movie.id) },*/
-            /*movie.production_countries.map { ProductionCountriesEntity(it.iso_3166_1, it.name, movie.id) },*/ movie.release_date, movie.revenue, movie.runtime,
-            /*movie.spoken_languages.map { SpokenLanguagesEntity(it.iso_639_1, it.name, movie.id) },*/ movie.status, movie.tagline, movie.title, movie.video,
-            movie.vote_average, movie.vote_count)
+            movie.poster_path, movie.release_date, movie.revenue, movie.runtime, movie.status, movie.tagline,
+            movie.title, movie.video, movie.vote_average, movie.vote_count)
 }
 
-fun mapMovieGenresToDB(movieGenres: Genres, movieId: Int) : GenresEntity {
-    return GenresEntity(movieGenres.id, movieGenres.name, movieId)
+fun mapMovieGenresToDB(movieGenres: List<Genres>, movieId: Int) : List<GenresEntity> {
+    return movieGenres.map { GenresEntity(it.id, it.name, movieId) }
 }
 
-fun mapMovieProductionCompanies(productionCompanies: ProductionCompanies, movieId : Int) : ProductionCompaniesEntity {
-    return ProductionCompaniesEntity(productionCompanies.id, productionCompanies.logo_path, productionCompanies.name, productionCompanies.origin_country, movieId)
+fun mapMovieProductionCompanies(productionCompanies: List<ProductionCompanies>, movieId : Int) : List<ProductionCompaniesEntity> {
+    return productionCompanies.map { ProductionCompaniesEntity(it.id, it.logo_path, it.name, it.origin_country, movieId) }
 }
 
-fun mapMovieProductionCountries(productionCountries: ProductionCountries, movieId : Int) : ProductionCountriesEntity {
-    return ProductionCountriesEntity(productionCountries.iso_3166_1, productionCountries.name, movieId)
+fun mapMovieProductionCountries(productionCountries: List<ProductionCountries>, movieId : Int) : List<ProductionCountriesEntity> {
+    return productionCountries.map { ProductionCountriesEntity(it.iso_3166_1, it.name, movieId) }
 }
 
-fun mapMovieSpokenLanguages(spokenLanguages: SpokenLanguages, movieId : Int) : SpokenLanguagesEntity {
-    return SpokenLanguagesEntity(spokenLanguages.iso_639_1, spokenLanguages.name, movieId)
+fun mapMovieSpokenLanguages(spokenLanguages: List<SpokenLanguages>, movieId : Int) : List<SpokenLanguagesEntity> {
+    return spokenLanguages.map { SpokenLanguagesEntity(it.iso_639_1, it.name, movieId) }
 }
 
-fun mapMovieFromDB(movieEntity : MovieEntity, genres : List<GenresEntity>, productionCompanies : List<ProductionCompaniesEntity>,
-                   productionCountries : List<ProductionCountriesEntity>, spokenLanguages : List<SpokenLanguagesEntity>) : Movie {
-    return Movie(movieEntity.adult, movieEntity.backdropPath, movieEntity.budget, mapMovieGenresFromDB(genres), movieEntity.homepage,
+fun mapAllMoviesToDB(data : List<MovieItem>) : List<MovieEntity> {
+    return data.map { MovieEntity(it.id, it.vote_count, it.video, it.vote_average, it.original_title,
+            it.popularity, it.poster_path, it.original_language, it.original_title, it.backdrop_path,
+            it.adult, it.overview, it.release_date) }
+}
+
+fun mapMovieFromDB(movieEntity : MovieDetailsEntity, genres : List<GenresEntity>, productionCompanies : List<ProductionCompaniesEntity>,
+                   productionCountries : List<ProductionCountriesEntity>, spokenLanguages : List<SpokenLanguagesEntity>) : MovieDetails {
+    return MovieDetails(movieEntity.adult, movieEntity.backdropPath, movieEntity.budget, mapMovieGenresFromDB(genres), movieEntity.homepage,
             movieEntity.id, movieEntity.imdbId, movieEntity.originalLanguage, movieEntity.originalTitle, movieEntity.overview,
             movieEntity.popularity, movieEntity.posterPath, mapMovieProductionCompaniesFromDB(productionCompanies), mapMovieProductionCountriesFromDB(productionCountries),
             movieEntity.releaseDate, movieEntity.revenue, movieEntity.runtime, mapMoviesspokenLanguagesFromDB(spokenLanguages), movieEntity.status,
@@ -51,4 +55,10 @@ fun mapMovieProductionCountriesFromDB(productionCountries : List<ProductionCount
 
 fun mapMoviesspokenLanguagesFromDB(spokenLanguages : List<SpokenLanguagesEntity>) : List<SpokenLanguages> {
     return spokenLanguages.map { SpokenLanguages(it.iso_639_1, it.name) }
+}
+
+fun mapAllMoviesFromDB(data : List<MovieEntity>) : List<MovieItem> {
+    return data.map { MovieItem(it.voteCount, it.id, it.video, it.voteAverage, it.originalTitle, it.popularity, it.posterPath,
+            it.originalLanguage, it.originalTitle, arrayListOf(), it.backdropPath, it.adult,
+            it.overview, it.releaseDate) }
 }

@@ -5,9 +5,9 @@
         xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".presentation.FragmentMain">
+             tools:context=".presentation.main.fragment.FragmentMain">
 
-    <ImageView
+    <!--<ImageView
             android:id="@+id/movie_img"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -88,6 +88,15 @@
             android:textColor="@android:color/darker_gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_overview_title"
-            tools:text="La la la la"/>
+            tools:text="La la la la"/>-->
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

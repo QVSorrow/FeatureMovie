@@ -1,7 +1,7 @@
 package com.featmov.serles.featuremovie.data.remote.responce
 
 
-data class Movie (
+data class MovieDetails (
         val adult: Boolean,
         val backdrop_path: String,
         val budget: Long,
