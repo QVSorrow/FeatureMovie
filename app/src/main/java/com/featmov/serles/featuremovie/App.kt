@@ -1,21 +1,22 @@
 package com.featmov.serles.featuremovie
 
-import android.support.v7.app.AppCompatDelegate
-import com.featmov.serles.featuremovie.di.AppModule
-import com.featmov.serles.featuremovie.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
+import com.featmov.serles.featuremovie.di.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-class App: DaggerApplication() {
+class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        //startKoin(this, listOf(movieModule))
+        startKoin {
+            androidContext(this@App)
+            modules(listOf(viewModelModule,
+                    repositoryModule,
+                    roomModule,
+                    remoteModule))
+        }
     }
-
-    override fun applicationInjector() : AndroidInjector<out DaggerApplication> =
-            DaggerAppComponent.builder()
-                    .appModule(AppModule(this))
-                    .create(this)
 }

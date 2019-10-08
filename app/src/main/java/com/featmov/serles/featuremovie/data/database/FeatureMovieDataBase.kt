@@ -1,7 +1,9 @@
 package com.featmov.serles.featuremovie.data.database
 
-import android.arch.persistence.room.*
 import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.featmov.serles.featuremovie.data.database.dao.MovieDataDao
 import com.featmov.serles.featuremovie.data.database.dao.MovieDetailsDataDao
 import com.featmov.serles.featuremovie.data.database.entitis.*

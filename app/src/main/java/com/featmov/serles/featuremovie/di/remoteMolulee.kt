@@ -5,38 +5,29 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import dagger.Module
-import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.dsl.module
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
-@Singleton
-@Module
-class RemoteModule {
+val remoteModule = module {
 
-    @Provides
     fun provideHttpClient() : OkHttpClient = OkHttpClient.Builder()
             .addNetworkInterceptor(HttpLoggingInterceptor()
-                    .apply { level = HttpLoggingInterceptor.Level.BASIC })
+                    .apply { level = HttpLoggingInterceptor.Level.BODY })
             .build()
 
-    @Provides
     fun provideGson() : Gson = GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create()
 
-    @Provides
     fun provideConverterFactory(gson : Gson) : Converter.Factory = GsonConverterFactory.create(gson)
 
-    @Provides
     fun provideCallFactory() : CallAdapter.Factory = CoroutineCallAdapterFactory()
 
-    @Provides
     fun provideRetrofit(
             httpClient : OkHttpClient,
             callAdapterFactory : CallAdapter.Factory,
@@ -50,7 +41,13 @@ class RemoteModule {
                 .build()
     }
 
-    @Provides
     fun provideRemoteDataSource(retrofit : Retrofit) : RemoteDataSource =
             RemoteDataSource(retrofit)
+
+    single { provideHttpClient() }
+    single { provideGson() }
+    single { provideConverterFactory(get()) }
+    single { provideCallFactory() }
+    single { provideRetrofit(get(), get(), get()) }
+    single { provideRemoteDataSource(get()) }
 }

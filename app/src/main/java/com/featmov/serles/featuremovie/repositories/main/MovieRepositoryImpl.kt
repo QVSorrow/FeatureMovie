@@ -4,10 +4,8 @@ import com.featmov.serles.featuremovie.*
 import com.featmov.serles.featuremovie.data.database.FeatureMovieDataBase
 import com.featmov.serles.featuremovie.data.remote.RemoteDataSource
 import com.featmov.serles.featuremovie.data.remote.responce.MovieItem
-import javax.inject.Inject
 
 class MovieRepositoryImpl
-@Inject
 constructor(val remoteDataSource: RemoteDataSource, val db : FeatureMovieDataBase): MovieRepository {
 
     override suspend fun getMovie(api_key : String){

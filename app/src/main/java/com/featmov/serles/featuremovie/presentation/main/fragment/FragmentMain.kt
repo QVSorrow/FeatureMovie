@@ -1,24 +1,21 @@
 package com.featmov.serles.featuremovie.presentation.main.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.featmov.serles.featuremovie.R
 import com.featmov.serles.featuremovie.presentation.main.adapter.MainAdapter
 import com.featmov.serles.featuremovie.presentation.main.MovieClick
 import com.featmov.serles.featuremovie.presentation.main.viewmodel.MovieViewModel
-import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,8 +34,6 @@ private const val ARG_PARAM2 = "param2"
  */
 class FragmentMain : Fragment(), MovieClick {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: MovieViewModel
     // TODO: Rename and change types of parameters
     private var param1 : String? = null
@@ -48,7 +43,6 @@ class FragmentMain : Fragment(), MovieClick {
     lateinit var list : RecyclerView
 
     override fun onCreate(savedInstanceState : Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(MOVIE_ID)
@@ -84,8 +78,7 @@ class FragmentMain : Fragment(), MovieClick {
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { activity ->
-            viewModel = ViewModelProviders.of(activity, viewModelFactory)
-                    .get(MovieViewModel::class.java)
+            viewModel = getViewModel(MovieViewModel::class)
             viewModel.movieLiveData.observe(this, Observer {
                 it?.let { it1 -> adapter.addItems(it1) }
             })

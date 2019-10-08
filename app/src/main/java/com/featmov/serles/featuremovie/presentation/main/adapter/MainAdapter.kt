@@ -1,14 +1,13 @@
 package com.featmov.serles.featuremovie.presentation.main.adapter
 
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.featmov.serles.featuremovie.R
 import com.featmov.serles.featuremovie.data.remote.responce.MovieItem
 import com.featmov.serles.featuremovie.presentation.main.MovieClick
@@ -25,12 +24,7 @@ class MainAdapter (private val data : MutableList<MovieItem> = mutableListOf()) 
 
     override fun onBindViewHolder(holder : ViewHolder, position : Int) {
         holder.movieName?.text = data[position].original_title
-        Glide.with(holder.movieImage.context)
-                .load(holder.movieImage.context.resources.getString(R.string.img_url) + data[position].poster_path)
-                .apply(RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .fitCenter())
-                .into(holder.movieImage)
+        holder.movieImage.load(holder.movieImage.context.resources.getString(R.string.img_url) + data[position].poster_path)
         holder.mainItem.setOnClickListener {
             movieClick.onClick(data[position].id)
         }

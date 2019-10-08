@@ -1,17 +1,15 @@
 package com.featmov.serles.featuremovie.presentation.second.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.featmov.serles.featuremovie.data.remote.responce.MovieDetails
 import com.featmov.serles.featuremovie.repositories.second.MovieDetailRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class MovieDetailViewModel
-@Inject
 constructor(val repository: MovieDetailRepository): ViewModel(){
     val movieLiveData = MutableLiveData<MovieDetails>()
 

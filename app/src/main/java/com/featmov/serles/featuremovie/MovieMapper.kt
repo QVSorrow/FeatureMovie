@@ -4,10 +4,10 @@ import com.featmov.serles.featuremovie.data.database.entitis.*
 import com.featmov.serles.featuremovie.data.remote.responce.*
 
 fun mapMovieToDB(movie: MovieDetails) : MovieDetailsEntity{
-    return MovieDetailsEntity(movie.id, movie.adult, movie.backdrop_path, movie.budget, movie.homepage,
-            movie.imdb_id, movie.original_language, movie.original_title, movie.overview, movie.popularity,
-            movie.poster_path, movie.release_date, movie.revenue, movie.runtime, movie.status, movie.tagline,
-            movie.title, movie.video, movie.vote_average, movie.vote_count)
+    return MovieDetailsEntity(movie.id, movie.adult?: false, movie.backdrop_path?: "", movie.budget?: 0, movie.homepage?: "",
+            movie.imdb_id?: "", movie.original_language?: "", movie.original_title?: "", movie.overview?: "", movie.popularity?: 0f,
+            movie.poster_path?: "", movie.release_date?: "", movie.revenue?: 0, movie.runtime?: 0, movie.status?: "", movie.tagline?: "",
+            movie.title?: "", movie.video?: false, movie.vote_average?: 0f, movie.vote_count?: 0)
 }
 
 fun mapMovieGenresToDB(movieGenres: List<Genres>, movieId: Int) : List<GenresEntity> {

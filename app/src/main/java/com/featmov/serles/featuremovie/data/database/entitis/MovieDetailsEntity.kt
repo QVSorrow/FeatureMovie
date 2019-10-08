@@ -1,6 +1,10 @@
 package com.featmov.serles.featuremovie.data.database.entitis
 
-import android.arch.persistence.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Relation
+
 
 @Entity(tableName = "movieDetailsData")
 data class MovieDetailsEntity (

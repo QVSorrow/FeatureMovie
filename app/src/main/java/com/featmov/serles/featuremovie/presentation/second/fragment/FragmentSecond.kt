@@ -1,24 +1,20 @@
 package com.featmov.serles.featuremovie.presentation.second.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import coil.api.load
 import com.featmov.serles.featuremovie.R
 import com.featmov.serles.featuremovie.presentation.second.fragment.FragmentSecondArgs.fromBundle
 import com.featmov.serles.featuremovie.presentation.second.viewmodel.MovieDetailViewModel
-import dagger.android.support.AndroidSupportInjection
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,8 +33,6 @@ private const val ARG_PARAM2 = "param2"
  */
 class FragmentSecond : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var viewModel: MovieDetailViewModel
     // TODO: Rename and change types of parameters
     private var param1 : Int? = null
@@ -51,7 +45,6 @@ class FragmentSecond : Fragment() {
     var mobieId = 0
 
     override fun onCreate(savedInstanceState : Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         arguments?.let {
             mobieId = fromBundle(it).movieId
@@ -87,18 +80,12 @@ class FragmentSecond : Fragment() {
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { activity ->
-            viewModel = ViewModelProviders.of(activity, viewModelFactory)
-                    .get(MovieDetailViewModel::class.java)
+            viewModel = getViewModel(MovieDetailViewModel::class)
             viewModel.movieLiveData.observe(this, Observer {
                 movie_name.text = it?.title
                 movie_genres.text = it?.genres?.get(0)?.name
                 movie_overview.text = it?.overview
-                Glide.with(activity)
-                        .load(resources.getString(R.string.img_url) + it?.backdrop_path)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.ic_launcher_background)
-                                .fitCenter())
-                        .into(movie_img)
+                movie_img.load(resources.getString(R.string.img_url) + it?.backdrop_path)
             })
             viewModel.getMovie(mobieId)
         }
