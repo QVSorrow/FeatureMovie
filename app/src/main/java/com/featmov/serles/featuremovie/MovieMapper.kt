@@ -27,9 +27,9 @@ fun mapMovieSpokenLanguages(spokenLanguages: List<SpokenLanguages>, movieId : In
 }
 
 fun mapAllMoviesToDB(data : List<MovieItem>) : List<MovieEntity> {
-    return data.map { MovieEntity(it.id, it.vote_count, it.video, it.vote_average, it.original_title,
-            it.popularity, it.poster_path, it.original_language, it.original_title, it.backdrop_path,
-            it.adult, it.overview, it.release_date) }
+    return data.map { MovieEntity(it.id, it.vote_count?: 0, it.video?: false, it.vote_average?: 0f, it.original_title,
+            it.popularity?: 0f, it.poster_path, it.original_language, it.original_title, it.backdrop_path,
+            it.adult?: false, it.overview, it.release_date) }
 }
 
 fun mapMovieFromDB(movieEntity : MovieDetailsEntity, genres : List<GenresEntity>, productionCompanies : List<ProductionCompaniesEntity>,
@@ -58,7 +58,7 @@ fun mapMoviesspokenLanguagesFromDB(spokenLanguages : List<SpokenLanguagesEntity>
 }
 
 fun mapAllMoviesFromDB(data : List<MovieEntity>) : List<MovieItem> {
-    return data.map { MovieItem(it.voteCount, it.id, it.video, it.voteAverage, it.originalTitle, it.popularity, it.posterPath,
+    return data.map { MovieItem(it.voteCount, it.id, it.video, it.voteAverage, it.originalTitle, it.popularity, it.posterPath?: "",
             it.originalLanguage, it.originalTitle, arrayListOf(), it.backdropPath, it.adult,
             it.overview, it.releaseDate) }
 }

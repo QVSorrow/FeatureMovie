@@ -1,5 +1,6 @@
 package com.featmov.serles.featuremovie.data.remote.responce
 
+
 data class MoviesResponse (
         val page: Int,
         val total_results: Int,
@@ -8,19 +9,18 @@ data class MoviesResponse (
 )
 
 data class MovieItem (
-        val vote_count: Long,
+        val vote_count: Long? = 0,
         val id: Int,
-        val video: Boolean,
-        val vote_average: Float,
+        val video: Boolean? = false,
+        val vote_average: Float? = 0f,
         val title: String? = "",
-        val popularity: Float,
-        val poster_path: String? = "",
+        val popularity: Float? = 0f,
+        val poster_path: String,
         val original_language: String? = "",
         val original_title: String? = "",
-        val genre_ids: ArrayList<Int>,
+        val genre_ids: ArrayList<Int>? = arrayListOf(),
         val backdrop_path: String? = "",
-        val adult: Boolean,
+        val adult: Boolean? = false,
         val overview: String? = "",
         val release_date: String? = ""
 )
-

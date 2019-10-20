@@ -12,10 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.featmov.serles.featuremovie.R
+import com.featmov.serles.featuremovie.base.BaseVMFragment
+import com.featmov.serles.featuremovie.databinding.FragmentMainBinding
 import com.featmov.serles.featuremovie.presentation.main.adapter.MainAdapter
 import com.featmov.serles.featuremovie.presentation.main.MovieClick
 import com.featmov.serles.featuremovie.presentation.main.viewmodel.MovieViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import kotlin.reflect.KClass
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,15 +35,18 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class FragmentMain : Fragment(), MovieClick {
+class FragmentMain : BaseVMFragment<MovieViewModel, FragmentMainBinding>(), MovieClick {
 
-    lateinit var viewModel: MovieViewModel
-    // TODO: Rename and change types of parameters
+    override fun getViewModelClass() : KClass<MovieViewModel> = MovieViewModel::class
+
+    override val layoutId : Int
+        get() = R.layout.fragment_main
+
+
     private var param1 : String? = null
     private var param2 : String? = null
     private var listener : OnFragmentInteractionListener? = null
-    lateinit var adapter : MainAdapter
-    lateinit var list : RecyclerView
+    var adapter = MainAdapter()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,20 +56,9 @@ class FragmentMain : Fragment(), MovieClick {
         }
     }
 
-    override fun onCreateView(inflater : LayoutInflater, container : ViewGroup?,
-                              savedInstanceState : Bundle?) : View? {
-        val view = inflater.inflate(R.layout.fragment_main, container, false)
-        list = view.findViewById(R.id.list)
-        adapter = MainAdapter(arrayListOf())
+    override fun setupViewModel(binding : FragmentMainBinding) {
         adapter.movieClick = this
-        list.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-        list.adapter = adapter
-        return view
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri : Uri) {
-        listener?.onFragmentInteraction(uri)
+        binding.list.adapter = adapter
     }
 
     override fun onAttach(context : Context) {
@@ -72,17 +67,6 @@ class FragmentMain : Fragment(), MovieClick {
             listener = context
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activity?.let { activity ->
-            viewModel = getViewModel(MovieViewModel::class)
-            viewModel.movieLiveData.observe(this, Observer {
-                it?.let { it1 -> adapter.addItems(it1) }
-            })
-            viewModel.getMovie()
         }
     }
 
