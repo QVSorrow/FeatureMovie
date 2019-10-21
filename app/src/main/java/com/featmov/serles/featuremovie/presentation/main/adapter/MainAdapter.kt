@@ -2,6 +2,10 @@ package com.featmov.serles.featuremovie.presentation.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.featmov.serles.featuremovie.base.BindableAdapter
 import com.featmov.serles.featuremovie.base.ViewHolder
